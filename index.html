@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Cafelicious</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <h1>Enter your order</h1>
+    <form name="myForm" onsubmit="submit_function(event)">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" />
+      <br /><br />
+      Which coffee would you like to order? <br />
+      <input type="radio" name="coffee" id="turkish" value="turkish coffee" />
+      <label for="turkish">Turkish coffee $3</label>
+      <br />
+      <input type="radio" name="coffee" id="american" value="american coffee" />
+      <label for="american">American coffee $5</label>
+      <br />
+      <input type="radio" name="coffee" id="iced_latte" value="iced latte" />
+      <label for="american">Iced latte $7</label>
+      <br /><br />
+      Do you need any extras?
+      <br />
+      <input
+        type="checkbox"
+        name="extras"
+        id="extra_coffee"
+        value="extra_coffee"
+      />
+      <label for="extra_coffee">Extra coffee $1.5</label>
+      <br />
+      <input
+        type="checkbox"
+        name="extras"
+        id="whipped_cream"
+        value="whipped_cream"
+      />
+      <label for="whipped_cream">Whipped cream $2</label>
+      <br />
+      <input
+        type="checkbox"
+        name="extras"
+        id="extra_caramel"
+        value="extra_caramel"
+      />
+      <label for="extra_caramel">Extra caramel $3</label>
+      <br /><br />
+      <input type="submit" value="Give me coffee!" />
+    </form>
+    <br /><br />
+    <p id="receipt"></p>
+    <script>
+      function submit_function(event) {
+        let name = document.getElementById("name").value;
+        let coffee = document.querySelector(
+          'input[name="coffee"]:checked'
+        ).value;
+
+        let extras = [];
+
+        let selectedExtras = document.querySelectorAll(
+          'input[name="extras"]:checked'
+        );
+        for (let i = 0; i < selectedExtras.length; i++) {
+          extras.push(selectedExtras[i].value);
+        }
+
+        let orderTotal = 0;
+
+        switch (coffee) {
+          case "turkish coffee":
+            orderTotal += 3;
+            break;
+          case "american coffee":
+            orderTotal += 5;
+            break;
+
+          case "iced latte":
+            orderTotal += 7;
+            break;
+        }
+        // using forEach to call a function on every instance of the array "extras"
+        extras.forEach(function (extra_item) {
+          switch (extra_item) {
+            case "extra_coffee":
+              orderTotal += 1.5;
+              break;
+            case "whipped_cream":
+              orderTotal += 2;
+              break;
+
+            case "extra_caramel":
+              orderTotal += 3;
+              break;
+          }
+        });
+
+        document.forms["myForm"]["extras"].forEach(function (item) {
+          if (item.checked) {
+            console.log(item.value);
+          }
+        });
+
+        let display_extras = [];
+
+        // do a forEach to take out the underscore _ in the ''
+
+        extras.forEach(function (item) {
+          display_extras.push(item.replace("_", " "));
+        });
+        let para = document.getElementById("receipt");
+        para.innerHTML =
+          "Name: " +
+          name +
+          "<br>Order: 1" +
+          coffee +
+          "<br>Extras: " +
+          display_extras.join(", ") +
+          "<br>Order Total:  " +
+          orderTotal;
+        event.preventDefault();
+      }
+    </script>
+  </body>
+</html>
